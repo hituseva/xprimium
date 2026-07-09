@@ -44,20 +44,13 @@ async def plan_select(update: Update, context: ContextTypes.DEFAULT_TYPE):
             "₹50 (30 Days) plan selected.\nPayment screenshot bhejiye."
         )
         
-async def receive_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
-
+async async def receive_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
 
     keyboard = InlineKeyboardMarkup([
         [
-            InlineKeyboardButton(
-                "✅ Approve",
-                callback_data=f"approve:{user_id}"
-            ),
-            InlineKeyboardButton(
-                "❌ Reject",
-                callback_data=f"reject:{user_id}"
-            )
+            InlineKeyboardButton("✅ Approve", callback_data=f"approve:{user_id}"),
+            InlineKeyboardButton("❌ Reject", callback_data=f"reject:{user_id}")
         ]
     ])
 
@@ -71,9 +64,9 @@ async def receive_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
         "✅ Screenshot receive ho gaya.\nVerification ka wait karein."
     )
-    
-    async def button_click(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
+
+async def button_click(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
 
@@ -84,25 +77,15 @@ async def receive_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = int(user_id)
 
     if action == "approve":
-
         await context.bot.send_message(
             chat_id=user_id,
             text=f"✅ Payment verified.\n\nChannel Link:\n{CHANNEL_LINK}"
         )
 
-        await query.edit_message_caption(
-            caption=query.message.caption + "\n\n✅ APPROVED"
-        )
-
     elif action == "reject":
-
         await context.bot.send_message(
             chat_id=user_id,
             text="❌ Payment verify nahi ho paya.\nKripya screenshot dubara bhejiye."
-        )
-
-        await query.edit_message_caption(
-            caption=query.message.caption + "\n\n❌ REJECTED"
         )
         
 app = Application.builder().token(BOT_TOKEN).build()
