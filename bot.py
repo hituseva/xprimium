@@ -73,11 +73,56 @@ async def receive_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
 app = Application.builder().token(BOT_TOKEN).build()
 
 app.add_handler(CommandHandler("start", start))
-app.add_handler(CallbackQueryHandler(plan_select))
+
+app.add_handler(
+    CallbackQueryHandler(
+        plan_select,
+        pattern="^plan_"
+    )
+)
+
+app.add_handler(
+    CallbackQueryHandler(
+        button_click,
+        pattern="^(approve|reject):"
+    )
+)
 app.add_handler(
     MessageHandler(
         filters.PHOTO,
         receive_photo
     )
 )
+async def button_click(update: Update, context: ContextTypes.DEFAULT_TYPE):
+
+    query = update.callback_query
+    await query.answer()
+
+    if ":" not in query.data:
+        return
+
+    action, user_id = query.data.split(":")
+    user_id = int(user_id)
+
+    if action == "approve":
+
+        await context.bot.send_message(
+            chat_id=user_id,
+            text=f"✅ Payment verified.\n\nChannel Link:\n{CHANNEL_LINK}"
+        )
+
+        await query.edit_message_caption(
+            caption=query.message.caption + "\n\n✅ APPROVED"
+        )
+
+    elif action == "reject":
+
+        await context.bot.send_message(
+            chat_id=user_id,
+            text="❌ Payment verify nahi ho paya.\nKripya screenshot dubara bhejiye."
+        )
+
+        await query.edit_message_caption(
+            caption=query.message.caption + "\n\n❌ REJECTED"
+        )
 app.run_polling()
