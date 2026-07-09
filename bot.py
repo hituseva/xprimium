@@ -43,10 +43,41 @@ async def plan_select(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await query.message.reply_text(
             "₹50 (30 Days) plan selected.\nPayment screenshot bhejiye."
         )
+async def receive_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
+    user_id = update.effective_user.id
+
+    keyboard = InlineKeyboardMarkup([
+        [
+            InlineKeyboardButton(
+                "✅ Approve",
+                callback_data=f"approve:{user_id}"
+            ),
+            InlineKeyboardButton(
+                "❌ Reject",
+                callback_data=f"reject:{user_id}"
+            )
+        ]
+    ])
+
+    await context.bot.send_photo(
+        chat_id=ADMIN_ID,
+        photo=update.message.photo[-1].file_id,
+        caption=f"Payment Screenshot\nUser ID: {user_id}",
+        reply_markup=keyboard
+    )
+
+    await update.message.reply_text(
+        "✅ Screenshot receive ho gaya.\nVerification ka wait karein."
+    )
 app = Application.builder().token(BOT_TOKEN).build()
 
 app.add_handler(CommandHandler("start", start))
 app.add_handler(CallbackQueryHandler(plan_select))
-
+app.add_handler(
+    MessageHandler(
+        filters.PHOTO,
+        receive_photo
+    )
+)
 app.run_polling()
