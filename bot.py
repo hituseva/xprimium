@@ -22,7 +22,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     await update.message.reply_photo(
         photo=open("qr.jpg", "rb"),
-        caption="UPI ID: yourupi@upi\n\nPayment karke plan select karein.",
+        caption="UPI ID: rzphitusolanki691055.rzp@ypbiz\n\nPayment karke plan select karein.",
         reply_markup=reply_markup
     )
 
