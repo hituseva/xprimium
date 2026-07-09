@@ -44,7 +44,7 @@ async def plan_select(update: Update, context: ContextTypes.DEFAULT_TYPE):
             "₹50 (30 Days) plan selected.\nPayment screenshot bhejiye."
         )
         
-async async def receive_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def receive_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
 
     keyboard = InlineKeyboardMarkup([
