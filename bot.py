@@ -70,30 +70,7 @@ async def receive_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
         "✅ Screenshot receive ho gaya.\nVerification ka wait karein."
     )
-app = Application.builder().token(BOT_TOKEN).build()
-
-app.add_handler(CommandHandler("start", start))
-
-app.add_handler(
-    CallbackQueryHandler(
-        plan_select,
-        pattern="^plan_"
-    )
-)
-
-app.add_handler(
-    CallbackQueryHandler(
-        button_click,
-        pattern="^(approve|reject):"
-    )
-)
-app.add_handler(
-    MessageHandler(
-        filters.PHOTO,
-        receive_photo
-    )
-)
-async def button_click(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    async def button_click(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     query = update.callback_query
     await query.answer()
@@ -125,4 +102,28 @@ async def button_click(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await query.edit_message_caption(
             caption=query.message.caption + "\n\n❌ REJECTED"
         )
+app = Application.builder().token(BOT_TOKEN).build()
+
+app.add_handler(CommandHandler("start", start))
+
+app.add_handler(
+    CallbackQueryHandler(
+        plan_select,
+        pattern="^plan_"
+    )
+)
+
+app.add_handler(
+    CallbackQueryHandler(
+        button_click,
+        pattern="^(approve|reject):"
+    )
+)
+app.add_handler(
+    MessageHandler(
+        filters.PHOTO,
+        receive_photo
+    )
+)
+
 app.run_polling()
