@@ -1,7 +1,9 @@
+import os
 from telegram import Update
 from telegram.ext import Application, MessageHandler, filters, ContextTypes
 
-ADMIN_ID = 6967545299
+ADMIN_ID = int(os.getenv("ADMIN_ID"))
+BOT_TOKEN = os.getenv("BOT_TOKEN")
 
 async def receive(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.forward_message(
@@ -10,6 +12,6 @@ async def receive(update: Update, context: ContextTypes.DEFAULT_TYPE):
         message_id=update.message.message_id
     )
 
-app = Application.builder().token("BOT_TOKEN").build()
+app = Application.builder().token(BOT_TOKEN).build()
 app.add_handler(MessageHandler(filters.ALL, receive))
 app.run_polling()
