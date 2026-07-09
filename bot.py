@@ -72,3 +72,18 @@ app.add_handler(MessageHandler(filters.PHOTO, receive_photo))
 app.add_handler(CallbackQueryHandler(button_click))
 
 app.run_polling()
+{
+  "user_id": 123456789,
+  "plan": "30day",
+  "expiry": "2026-08-08T12:00:00"
+}
+expiry = now + timedelta(days=1)
+expiry = now + timedelta(days=30)
+if expiry <= current_time:
+    remove_user()
+    await bot.ban_chat_member(CHANNEL_ID, user_id)
+await bot.unban_chat_member(CHANNEL_ID, user_id)
+await update.message.reply_photo(
+    photo=open("qr.jpg","rb"),
+    caption="UPI ID: yourupi@upi"
+)
