@@ -12,7 +12,7 @@ from telegram.ext import (
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 ADMIN_ID = int(os.getenv("ADMIN_ID"))
 
-CHANNEL_LINK = https://t.me/+1ZCPS42UaNtlYjM1
+CHANNEL_LINK = "https://t.me/+1ZCPS42UaNtlYjM1"
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
