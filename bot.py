@@ -35,17 +35,22 @@ async def plan_select(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await query.answer()
 
     if query.data == "plan_1":
+        context.user_data["plan"] = "1 Day"
+
         await query.message.reply_text(
             "₹10 (1 Day) plan selected.\nPayment screenshot bhejiye."
         )
 
     elif query.data == "plan_30":
+        context.user_data["plan"] = "30 Days"
+
         await query.message.reply_text(
             "₹50 (30 Days) plan selected.\nPayment screenshot bhejiye."
         )
         
 async def receive_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
+plan = context.user_data.get("plan", "Not Selected")
 
     keyboard = InlineKeyboardMarkup([
         [
@@ -57,7 +62,7 @@ async def receive_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_photo(
         chat_id=ADMIN_ID,
         photo=update.message.photo[-1].file_id,
-        caption=f"Payment Screenshot\nUser ID: {user_id}",
+        caption=f"Payment Screenshot\nUser ID: {user_id}\nPlan: {plan}",
         reply_markup=keyboard
     )
 
