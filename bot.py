@@ -50,7 +50,7 @@ async def plan_select(update: Update, context: ContextTypes.DEFAULT_TYPE):
         
 async def receive_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
-plan = context.user_data.get("plan", "Not Selected")
+    plan = context.user_data.get("plan", "Not Selected")
 
     keyboard = InlineKeyboardMarkup([
         [
@@ -69,7 +69,6 @@ plan = context.user_data.get("plan", "Not Selected")
     await update.message.reply_text(
         "✅ Screenshot receive ho gaya.\nVerification ka wait karein."
     )
-
 
 async def button_click(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
